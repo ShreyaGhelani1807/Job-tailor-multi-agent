@@ -1,0 +1,203 @@
+
+AI JOB APPLICATION TAILOR
+AGENT SYSTEM
+
+Complete Project Definition Document
+
+
+AI / ML Portfolio Project  ·  Intermediate–Advanced  ·  Est. Build Time: 10–14 Days
+
+1. Project Overview
+The AI Job Application Tailor is a multi-agent system that automates the end-to-end process of customising a job application. A user provides their resume, LinkedIn profile, and a target job posting — and a hierarchy of specialised AI agents analyses, tailors, critiques, and generates every document needed to apply: a rewritten resume, a personalised cover letter, a cold recruiter email, an ATS compatibility report, and role-specific interview preparation questions.
+
+Unlike simple prompt-based generators, this system uses a CrewAI hierarchical process where a Manager Agent decomposes the task, delegates to specialist sub-agents, runs a critic feedback loop until quality thresholds are met, and stores each application in a ChromaDB vector memory for future context.
+
+
+
+2. Problem Statement
+Job seekers face a painful, repetitive process every time they apply for a new role: reading the job description carefully, identifying the keywords and skills the employer prioritises, manually rewriting their resume to match, writing a new cover letter from scratch, researching the company to personalise the letter, drafting a cold email to a recruiter, and preparing for the specific interview questions the role is likely to involve.
+
+Most people either skip this customisation entirely (hurting their ATS match score) or spend 2–4 hours per application doing it manually. Existing tools either generate generic output without truly understanding the candidate's profile, or require the user to do all the thinking themselves.
+
+2.1 Core pain points addressed
+Generic applications that fail ATS screening due to missing keywords
+Time-intensive manual tailoring that discourages applying to many roles
+Inconsistent tone and messaging across cover letters and emails
+No feedback mechanism to know if the resume actually matches the job requirements
+Interview preparation is decoupled from the specific role being applied to
+
+
+3. System Inputs
+The Streamlit UI accepts four inputs. All four are optional — the system degrades gracefully if some are missing — but the richer the input, the more personalised the output.
+
+3.1 Input 1 — Resume PDF
+User uploads their current resume as a PDF file via Streamlit file uploader
+PyMuPDF (fitz) extracts raw text from the PDF, preserving section structure
+The Profile Parser agent then structures this into a canonical candidate profile: name, summary, skills, experience entries (role, company, dates, bullets), education, certifications, and links
+This structured profile is the foundation every other agent builds on
+
+3.2 Input 2 — LinkedIn Profile URL
+User pastes their LinkedIn public profile URL
+Firecrawl scrapes the public LinkedIn page and extracts the text content
+The Profile Parser merges this with the resume data — LinkedIn often contains additional projects, recommendations, and skills not on the formal resume
+This enriched profile is richer than resume-only input, improving all downstream outputs
+
+3.3 Input 3 — Job Posting URL
+User pastes the URL of the job posting (LinkedIn, Indeed, company careers page, etc.)
+Firecrawl scrapes the page and extracts the job description text automatically
+This is the preferred input method — it captures the full JD without copy-paste errors
+
+3.4 Input 4 — Job Description Text (paste)
+Alternative to URL — user pastes the job description text directly into a Streamlit text area
+Used when the job is behind a login wall (e.g. internal job boards) or the URL scrape fails
+Both URL and text inputs are accepted simultaneously; the system merges them if both are provided
+
+
+4. Agent Architecture
+The system uses CrewAI's hierarchical process. The Manager Agent sits at the top, receives the raw inputs, decomposes the task, and delegates to eight specialised sub-agents in a defined sequence. Sub-agents do not communicate directly with each other — all inter-agent communication flows through the Manager, which passes structured context between agents.
+
+
+4.1 Manager Agent — detailed
+The Manager Agent is configured with CrewAI's Process.HIERARCHICAL setting. It receives all raw inputs, runs a planning step to identify which sub-agents are needed (skipping agents if inputs are missing), creates a structured task manifest, and dispatches tasks in order. After the generation agents complete, it routes all outputs to the Critic agent for review. If the Critic returns a rewrite request, the Manager re-dispatches only the failing agent. This loop runs a maximum of 3 times per agent before accepting the best available output.
+
+4.2 Critic feedback loop
+This is the most technically impressive part of the system. After Resume Tailor, Cover Letter Writer, and Cold Email Writer complete their drafts, the Critic agent evaluates each output on four dimensions:
+Keyword alignment — does the resume/letter include the exact keywords from the JD?
+Tone consistency — does the language match the candidate's natural writing style?
+ATS safety — are there any formatting elements that would break ATS parsing?
+Specificity — are claims concrete and quantified, or vague and generic?
+
+Each dimension is scored 1–10. If any dimension scores below 7, the Critic returns a structured rewrite instruction to the Manager, which re-dispatches the relevant agent with the critique as additional context. This loop creates genuinely better output than a single-pass generation.
+
+5. System Outputs
+Five outputs are generated per run, displayed in separate Streamlit tabs. All outputs are available for download as individual files.
+
+5.1 Tailored resume
+The original resume is rewritten — not just keyword-stuffed
+The professional summary is rewritten to mirror the JD's language and the company's stated values
+Bullet points in each experience entry are reordered so the most JD-relevant achievements appear first
+New keywords from the JD are woven into existing bullets naturally — not appended as a keyword list
+Sections that are irrelevant to the role (e.g. unrelated side projects) are de-emphasised
+Output is clean markdown that the user can paste into any resume builder
+
+5.2 ATS score & gap analysis
+Overall ATS match percentage (0–100%) based on keyword overlap with the JD
+List of keywords present in the JD but missing from the resume — the 'gaps'
+List of keywords already present — confirmation of what's working
+Estimated ATS system the company uses (Greenhouse / Lever / Workday) based on Serper search
+Specific recommendations to close the top 5 gaps
+Displayed in Streamlit with a colour-coded progress bar and expandable gap list
+
+5.3 Cover letter
+Personalised to the specific company and role — not a template
+Opening paragraph hooks with a genuine connection to the company's mission or a recent news item found via Serper
+Body paragraphs map two or three of the candidate's strongest achievements directly to the JD requirements
+Closing paragraph is concise and confident with a clear call to action
+Tone mirrors the candidate's writing style extracted from their LinkedIn summary and resume
+Length: 3–4 paragraphs, 250–320 words — optimised for recruiter attention spans
+
+5.4 Cold recruiter email
+Short, direct, and personalised — not a cover letter in email form
+Subject line generated separately — optimised for open rate
+Body: 3 sentences max — who you are, why this role, call to action
+Serper searches for the recruiter or hiring manager's name if available
+Tone is confident and peer-level — not pleading
+
+5.5 Interview preparation
+10 role-specific interview questions generated from the JD requirements
+5 behavioural questions (STAR format) based on the specific responsibilities listed
+5 technical questions based on the skills and tools mentioned in the JD
+A model answer for each question using the candidate's own experience as the source material
+Displayed as an expandable Q&A list in Streamlit — easy to study from
+
+6. Memory System
+The Memory Agent uses ChromaDB as a local vector store to persist application history across sessions. This is the feature that elevates the system from a one-shot generator to a learning application assistant.
+
+6.1 What gets stored
+A vector embedding of the full job description
+Company name, role title, application date
+The generated resume, cover letter, and ATS score for that application
+The Critic's final quality scores for that run
+
+6.2 How memory improves outputs
+When a new application is run, the Memory Agent retrieves the 3 most similar past applications (by JD embedding similarity)
+Resume Tailor uses past tailored resumes as style reference — ensuring tone consistency over time
+Cover Letter Writer uses past letters as tone examples — the system learns the user's voice
+The Manager uses past ATS scores to highlight recurring gap patterns the user should address structurally
+
+6.3 ChromaDB setup
+Local ChromaDB instance — no cloud dependency, data stays on the user's machine
+Single collection: job_applications
+Each document: JD embedding as vector, metadata fields for company/role/date/scores
+Retrieval: cosine similarity search, top-3 results passed as context to generation agents
+
+
+7. Technology Stack
+
+
+8. Project Folder Structure
+
+
+9. Streamlit UI Design
+The UI is intentionally minimal — the intelligence is in the agents, not the interface. The goal is a clean, professional tool that impresses in a demo without distracting from the agent outputs.
+
+9.1 Sidebar — inputs
+st.file_uploader — Resume PDF upload
+st.text_input — LinkedIn profile URL
+st.text_input — Job posting URL
+st.text_area — Job description paste (shown only if URL field is empty)
+st.button('Tailor my application') — triggers the crew run
+
+9.2 Main area — live agent status
+While the agents are running, a st.status() block shows which agent is currently active and what it is doing. This is the demo showpiece — watching 'Resume Tailor Agent is rewriting your experience section...' update in real-time makes the system feel alive and impressive.
+
+st.status() with expanding log — one line per agent task completion
+Progress bar tracking overall completion (n agents done / total)
+Each agent logs its key action: 'JD Analyser found 23 required keywords'
+
+9.3 Output tabs
+Tab 1 — ATS Score: colour-coded match percentage, gap table, recommendations
+Tab 2 — Tailored Resume: rendered markdown + download .md and .docx buttons
+Tab 3 — Cover Letter: rendered markdown + copy to clipboard button
+Tab 4 — Cold Email: plain text with subject line, copy to clipboard
+Tab 5 — Interview Prep: st.expander per question, answer revealed on click
+
+
+10. 14-Day Build Plan
+
+
+11. Resume Bullets for This Project
+Use these on your resume when presenting this project. They are written to pass ATS for AI/ML Engineer, GenAI Engineer, and AI Automation Engineer roles.
+
+11.1 Project title line
+
+11.2 Achievement bullets
+Built a 10-agent hierarchical multi-agent system using CrewAI that automates end-to-end job application tailoring — resume rewriting, ATS scoring, cover letter generation, cold email drafting, and interview prep — from a single resume PDF and job URL input
+Implemented a Critic agent feedback loop that scores generated outputs on 4 quality dimensions and re-dispatches failing agents for rewriting, improving output quality by simulating a review-and-revise editorial process
+Integrated Firecrawl for JS-rendered job board scraping, Serper API for real-time recruiter and company research, and PyMuPDF for structured PDF resume parsing as custom CrewAI tools
+Designed a ChromaDB vector memory layer that persists past applications and retrieves semantically similar ones at runtime, enabling tone consistency and context-aware tailoring across multiple job applications
+Deployed on Streamlit with a live agent status log using st.status(), giving users real-time visibility into agent execution — 5-tab output interface with markdown preview and file download
+
+12. N8N Output Delivery Integration
+Once the CrewAI crew finishes generating all five outputs, an N8N workflow takes over as the delivery layer. Rather than the user manually downloading files from Streamlit, N8N automatically emails the outputs, saves them to Google Drive in an organised folder, and logs the application to a Google Sheets tracker — all triggered by a single HTTP POST from Python.
+
+This integration is what separates a demo tool from a real product. The user clicks 'Tailor my application', watches the agents run, and within seconds receives an email with everything ready to use.
+
+12.1 How the trigger works
+At the end of crew.py, after all agent outputs are collected, a single function sends the complete payload to an N8N webhook URL:
+
+
+12.2 N8N workflow structure
+The N8N workflow has four nodes. The Webhook Trigger node receives the POST, then fans out to three parallel nodes — Gmail, Google Drive, and Google Sheets — which all execute simultaneously. Finally, the Respond to Webhook node sends a success JSON response back to Python, which Streamlit displays as a green toast notification.
+
+
+12.3 Google Drive folder structure
+
+
+12.4 Google Sheets tracker schema
+
+
+12.5 Environment setup
+Add the N8N webhook URL to your .env file alongside the other API keys. N8N can be run locally (self-hosted) during development, or deployed to n8n.cloud for production use.
+
+

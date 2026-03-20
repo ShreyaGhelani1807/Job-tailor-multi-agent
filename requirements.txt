@@ -1,0 +1,9 @@
+crewai
+crewai-tools
+langchain-groq
+chromadb
+streamlit
+pymupdf
+firecrawl-py
+python-dotenv
+requests

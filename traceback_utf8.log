@@ -1,0 +1,517 @@
+﻿+-------------------------[CrewAIEventsBus] Sync handler error in on_crew_started: 'charmap' codec can't 
+encode character '\U0001f680' in position 1: character maps to <undefined>
++-------------------------[CrewAIEventsBus] Sync handler error in on_task_started: 'charmap' codec can't 
+encode character '\U0001f680' in position 1: character maps to <undefined>
++-------------------------[CrewAIEventsBus] Sync handler error in on_agent_logs_started: 'charmap' codec 
+can't encode character '\U0001f680' in position 1: character maps to 
+<undefined>
+.\venv\Scripts\python.
+exe : 
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+At line:1 char:1
++ .\venv\Scripts\pytho
+n.exe test_crew.py > 
+traceback.log 2>&1
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ERROR:root   
+ :Open... 'status'    
+: 401}:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
++-[CrewAIEventsBus]------------------------------ Warning: Event pairing mismatch. 'llm_call_failed'[CrewAIEventsBus closed 
+] Sync handler error in on_llm_call_failed: 'agent_execution_started' 'charmap' codec 
+can't encode character '\u274c' in position 1: character maps to <undefined>
+(expected 'llm_call_started')
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
++-------------------------[CrewAIEventsBus] Sync handler error in on_llm_call_failed: 'charmap' codec 
+can't encode character '\U0001f680' in position 1: character maps to 
+<undefined>
++-------------------------[CrewAIEventsBus] Sync handler error in on_agent_logs_started: 'charmap' codec 
+can't encode character '\U0001f680' in position 1: character maps to 
+<undefined>
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+[CrewAIEventsBus] Warning: Event pairing mismatch. 'llm_call_failed' closed 
+'agent_execution_started' (expected 'llm_call_started')
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
++-------------------------------+-------------------------[CrewAIEventsBus] Sync handler error in on_llm_call_failed: 'charmap' codec 
+can't encode character '\u274c' in position 1: character maps to <undefined>
+[CrewAIEventsBus] Sync handler error in on_llm_call_failed: 'charmap' codec 
+can't encode character '\U0001f680' in position 1: character maps to 
+<undefined>
++-----------------------------[CrewAIEventsBus] Sync handler error in on_agent_logs_started: 'charmap' codec 
+can't encode character '\U0001f916' in position 1: character maps to 
+<undefined>
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+ERROR:root:OpenAI API 
+call failed: Error 
+code: 401 - {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+[CrewAIEventsBus] Warning: Event pairing mismatch. 'llm_call_failed' closed 
+'agent_execution_started' (expected 'llm_call_started')
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}[0m
+[CrewAIEventsBus] Warning: Event pairing mismatch. 'agent_execution_error' 
+closed 'task_started' (expected 'agent_execution_started')
+[+-CrewAIEventsBus] Warning: Event pairing mismatch. ------------------------------'task_failed' closed 
+'crew_kickoff_started' (expected 'task_started')
+[CrewAIEventsBus] Sync handler error in on_llm_call_failed: 'charmap' codec 
+can't encode character '\u274c' in position 1: character maps to <undefined>
++-------------------------+-[----------------------------CrewAIEventsBus] Sync handler error in on_llm_call_failed: 'charmap' codec 
+can't encode character '\U0001f680' in position 1: character maps to 
+[CrewAIEventsBus] Warning: Ending event 'crew_kickoff_failed' emitted with 
+empty scope stack. Missing starting event?
+<undefined>
++-------------------------------[CrewAIEventsBus] Sync handler error in on_task_failed: 'charmap' codec can't 
+encode character '\U0001f916' in position 1: character maps to <undefined>
+[CrewAIEventsBus] Sync handler error in on_crew_failed: 'charmap' codec can't 
+encode character '\u274c' in position 1: character maps to <undefined>
+Traceback (most 
+recent call last):
+  File 
+"D:\Projects\AI Job 
+Tailor 
+Agent\test_crew.py", 
+line 18, in <module>
+    run_crew(inputs)
+    ~~~~~~~~^^^^^^^^
+  File 
+"d:\Projects\AI Job 
+Tailor 
+Agent\crew.py", line 
+87, in run_crew
+    crew.kickoff()
+    ~~~~~~~~~~~~^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\c
+rew.py", line 743, in 
+kickoff
+    result = self._run
+_sequential_process()
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\c
+rew.py", line 1150, 
+in _run_sequential_pro
+cess
+    return self._execu
+te_tasks(self.tasks)
+           ~~~~~~~~~~~
+~~~~~~~~^^^^^^^^^^^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\c
+rew.py", line 1236, 
+in _execute_tasks
+    task_output = 
+task.execute_sync(
+        
+agent=exec_data.agent,
+        
+context=context,
+        
+tools=exec_data.tools,
+    )
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\t
+ask.py", line 499, in 
+execute_sync
+    return self._execu
+te_core(agent, 
+context, tools)
+           ~~~~~~~~~~~
+~~~~~~~^^^^^^^^^^^^^^^
+^^^^^^^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\t
+ask.py", line 740, in 
+_execute_core
+    raise e  # 
+Re-raise the 
+exception after 
+emitting the event
+    ^^^^^^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\t
+ask.py", line 671, in 
+_execute_core
+    result = 
+agent.execute_task(
+        task=self,
+        
+context=context,
+        tools=tools,
+    )
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gent\core.py", line 
+493, in execute_task
+    result = self.exec
+ute_task(task, 
+context, tools)
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gent\core.py", line 
+493, in execute_task
+    result = self.exec
+ute_task(task, 
+context, tools)
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gent\core.py", line 
+492, in execute_task
+    raise e
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gent\core.py", line 
+459, in execute_task
+    result = self._exe
+cute_without_timeout(t
+ask_prompt, task)
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gent\core.py", line 
+568, in _execute_witho
+ut_timeout
+    return self.agent_
+executor.invoke(
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~^
+        {
+        ^
+    ...<4 lines>...
+        }
+        ^
+    )["output"]
+    ^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gents\crew_agent_execu
+tor.py", line 207, in 
+invoke
+    formatted_answer 
+= self._invoke_loop()
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gents\crew_agent_execu
+tor.py", line 305, in 
+_invoke_loop
+    return self._invok
+e_loop_native_tools()
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gents\crew_agent_execu
+tor.py", line 579, in 
+_invoke_loop_native_to
+ols
+    raise e
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\a
+gents\crew_agent_execu
+tor.py", line 498, in 
+_invoke_loop_native_to
+ols
+    answer = 
+get_llm_response(
+        llm=self.llm,
+    ...<9 lines>...
+        verbose=self.a
+gent.verbose,
+    )
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\u
+tilities\agent_utils.p
+y", line 372, in 
+get_llm_response
+    raise e
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\u
+tilities\agent_utils.p
+y", line 362, in 
+get_llm_response
+    answer = llm.call(
+        messages,
+    ...<5 lines>...
+        response_model
+=response_model,
+    )
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\l
+lms\providers\openai\c
+ompletion.py", line 
+410, in call
+    return self._call_
+completions(
+           ~~~~~~~~~~~
+~~~~~~~~~~~^
+        messages=forma
+tted_messages,
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+    ...<4 lines>...
+        response_model
+=response_model,
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\l
+lms\providers\openai\c
+ompletion.py", line 
+450, in 
+_call_completions
+    return self._handl
+e_completion(
+           ~~~~~~~~~~~
+~~~~~~~~~~~~^
+        params=complet
+ion_params,
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^
+    ...<3 lines>...
+        response_model
+=response_model,
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\l
+lms\providers\openai\c
+ompletion.py", line 
+1687, in 
+_handle_completion
+    raise e from e
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\crewai\l
+lms\providers\openai\c
+ompletion.py", line 
+1585, in 
+_handle_completion
+    response: 
+ChatCompletion = self.
+client.chat.completion
+s.create(**params)
+                      
+         ~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\openai\_
+utils\_utils.py", 
+line 287, in wrapper
+    return 
+func(*args, **kwargs)
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\openai\r
+esources\chat\completi
+ons\completions.py", 
+line 925, in create
+    return self._post(
+           ~~~~~~~~~~^
+        
+"/chat/completions",
+        
+^^^^^^^^^^^^^^^^^^^^
+    ...<43 lines>...
+        stream_cls=Str
+eam[ChatCompletionChun
+k],
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^
+    )
+    ^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\openai\_
+base_client.py", line 
+1242, in post
+    return 
+cast(ResponseT, 
+self.request(cast_to, 
+opts, stream=stream, s
+tream_cls=stream_cls))
+                      
+     ~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^
+  File 
+"D:\Projects\AI Job 
+Tailor Agent\venv\Lib\
+site-packages\openai\_
+base_client.py", line 
+1037, in request
+    raise self._make_s
+tatus_error_from_respo
+nse(err.response) 
+from None
+openai.AuthenticationE
+rror: Error code: 401 
+- {'error': 
+{'message': 
+'Incorrect API key 
+provided: 
+sk-proj-*****-key. 
+You can find your API 
+key at https://platfor
+m.openai.com/account/a
+pi-keys.', 'type': 'in
+valid_request_error', 
+'code': 
+'invalid_api_key', 
+'param': None}, 
+'status': 401}
+Crew error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-*****-key. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'code': 'invalid_api_key', 'param': None}, 'status': 401}
