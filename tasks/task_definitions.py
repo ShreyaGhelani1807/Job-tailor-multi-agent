@@ -34,8 +34,8 @@ def create_tasks(agents, inputs):
     parse_profile = Task(
         description=(
             f"Parse the candidate profile.\n{profile_source}\n\n"
-            "Use the PDF Parser tool to read the resume file if a path is provided. "
-            "Build a structured profile: name, summary, skills, experience, education, projects."
+            "IMPORTANT: You have access to the 'PDF Resume Parser' tool. "
+            "Call this tool with the file_path to extract resume text, then build a structured profile with: name, summary, skills, experience, education, projects."
         ),
         expected_output="Structured candidate profile: Summary, Skills, Experience, Education, Projects.",
         agent=agents["profile_parser"],

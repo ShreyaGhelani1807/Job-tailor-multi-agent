@@ -1,95 +1,110 @@
+"""
+Streamlit UI for the AI Job Application Tailor.
+Accepts inputs, renders status logs, and displays the 5 generated outputs.
+"""
+
+import os
+os.environ["OPENAI_API_KEY"] = "sk-dummy-not-used"
+
+
 import streamlit as st
-import tempfile, os
-from crew import run_crew
+import time
+from tools.scraper import ScraperTool
+from crew import JobApplicationCrew
 
-st.set_page_config(page_title="AI Job Tailor", page_icon="🎯", layout="wide")
-st.title("AI Job Application Tailor")
-st.caption("Powered by CrewAI · Groq · ChromaDB · N8N")
+# Streamlit Page Config
+st.set_page_config(page_title="AI Job Application Tailor", page_icon="💼", layout="wide")
 
-with st.sidebar:
-    st.header("Your inputs")
-    resume_file  = st.file_uploader("Resume PDF", type=["pdf"])
-    linkedin_url = st.text_input("LinkedIn profile URL (optional)")
-    jd_url       = st.text_input("Job posting URL (optional)")
-    jd_text      = st.text_area("Or paste job description here", height=200)
-    company      = st.text_input("Company name")
-    role         = st.text_input("Job title / role")
-    run_btn      = st.button("Tailor my application", type="primary", use_container_width=True)
-
-if run_btn:
-    if not resume_file and not linkedin_url:
-        st.error("Please upload a resume PDF or provide a LinkedIn URL.")
-    elif not jd_url and not jd_text:
-        st.error("Please provide a job posting URL or paste the job description.")
-    else:
-        resume_path = None
-        if resume_file:
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
-                tmp.write(resume_file.read())
-                resume_path = tmp.name
-
-        inputs = {
-            "resume_path":  resume_path,
-            "linkedin_url": linkedin_url,
-            "jd_url":       jd_url,
-            "jd_text":      jd_text,
-            "company":      company,
-            "role":         role
-        }
-
-        with st.status("Running agents...", expanded=True) as status:
-            st.write("Starting CrewAI crew...")
+def main():
+    st.title("💼 AI Job Application Tailor")
+    st.markdown("Automate your end-to-end job application tailoring with a CrewAI multi-agent system.")
+    
+    # Sidebar
+    st.sidebar.header("Agent Inputs")
+    uploaded_resume = st.sidebar.file_uploader("Resume PDF (*Required*)", type=["pdf"])
+    linkedin_url = st.sidebar.text_input("LinkedIn Profile URL (Optional)")
+    job_url = st.sidebar.text_input("Job Posting URL")
+    job_text = st.sidebar.text_area("Job Description (Paste if no URL)")
+    
+    if st.sidebar.button("Tailor my application", type="primary"):
+        if not uploaded_resume:
+            st.sidebar.error("Please upload a Resume PDF.")
+            return
+        if not job_url and not job_text:
+            st.sidebar.error("Please provide either a Job Posting URL or paste the Job Description.")
+            return
+            
+        # Save temp file
+        temp_pdf_path = os.path.join(os.getcwd(), "temp_resume.pdf")
+        with open(temp_pdf_path, "wb") as f:
+            f.write(uploaded_resume.getbuffer())
+            
+        st.toast("Starting job tailoring workflow...", icon="🚀")
+        
+        with st.status("Agents are evaluating your application...", expanded=True) as status:
             try:
-                outputs = run_crew(inputs)
-                status.update(label="All agents complete!", state="complete")
+                # 1. Setup job context
+                jd_context = job_text
+                if job_url:
+                    st.write("- Scraping Job Description URL...")
+                    scraper = ScraperTool()
+                    scraped_jd = scraper._run(job_url)
+                    if not scraped_jd.startswith("Error"):
+                        jd_context = scraped_jd + "\n\n" + job_text
+                        
+                # 2. Instantiate and run crew
+                st.write("- Initialising CrewAI Manager and specialized agents...")
+                st.write("- Running hierarchical task execution (this might take a few minutes)...")
+                
+                crew_job = JobApplicationCrew(
+                    resume_path=temp_pdf_path,
+                    linkedin_url=linkedin_url if linkedin_url else "Not provided",
+                    jd_text_or_url=jd_context
+                )
+                
+                outputs = crew_job.run()
+                
+                if "error" in outputs:
+                    status.update(label="Workflow failed.", state="error", expanded=True)
+                    st.error(outputs["error"])
+                else:
+                    status.update(label="Workflow Complete! Webhook sent.", state="complete", expanded=False)
+                    st.toast("All documents generated and delivered via N8N!", icon="✅")
+                    # Store outputs
+                    st.session_state["outputs"] = outputs
+                    
             except Exception as e:
-                status.update(label="Error", state="error")
-                st.error(f"Something went wrong: {str(e)}")
-                outputs = None
+                status.update(label="An error occurred.", state="error", expanded=True)
+                st.error(f"Execution Error: {str(e)}")
+            finally:
+                # Cleanup
+                if os.path.exists(temp_pdf_path):
+                    os.remove(temp_pdf_path)
 
-        if resume_path:
-            os.unlink(resume_path)
+    # Render Tabs
+    if "outputs" in st.session_state:
+        outputs = st.session_state["outputs"]
+        t1, t2, t3, t4, t5 = st.tabs(["ATS Score", "Tailored Resume", "Cover Letter", "Cold Email", "Interview Prep"])
+        
+        with t1:
+            st.subheader("ATS Score & Gap Analysis")
+            st.markdown(outputs.get("ats_score", "No data generated."))
+            
+        with t2:
+            st.subheader("Tailored Resume")
+            st.markdown(outputs.get("tailored_resume", "No data generated."))
+            
+        with t3:
+            st.subheader("Personalised Cover Letter")
+            st.markdown(outputs.get("cover_letter", "No data generated."))
+            
+        with t4:
+            st.subheader("Recruiter Cold Email")
+            st.markdown(outputs.get("cold_email", "No data generated."))
+            
+        with t5:
+            st.subheader("Role-specific Interview Prep")
+            st.markdown(outputs.get("interview_prep", "No data generated."))
 
-        if outputs:
-            n8n = outputs.get("n8n_status", {})
-            if n8n.get("status") == "delivered":
-                st.success("Outputs delivered to your email and saved to Google Drive!")
-
-            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-                "ATS Score", "Tailored Resume", "Cover Letter",
-                "Cold Email", "Interview Prep", "Critic Review"
-            ])
-
-            with tab1:
-                st.markdown("### ATS Compatibility Report")
-                st.markdown(outputs.get("ats_score", "Not generated."))
-
-            with tab2:
-                st.markdown("### Tailored Resume")
-                resume_text = outputs.get("tailored_resume", "Not generated.")
-                st.markdown(resume_text)
-                st.download_button("Download resume (.txt)", resume_text,
-                                   file_name=f"resume_{company}_{role}.txt")
-
-            with tab3:
-                st.markdown("### Cover Letter")
-                cover = outputs.get("cover_letter", "Not generated.")
-                st.markdown(cover)
-                st.button("Copy to clipboard", key="copy_cover",
-                          on_click=lambda: st.write(cover))
-
-            with tab4:
-                st.markdown("### Cold Recruiter Email")
-                st.markdown(outputs.get("cold_email", "Not generated."))
-
-            with tab5:
-                st.markdown("### Interview Preparation")
-                qa = outputs.get("interview_prep", "Not generated.")
-                for i, block in enumerate(qa.split("\n\n")):
-                    if block.strip():
-                        with st.expander(f"Q{i+1}" if not block.startswith("Q") else block.split("\n")[0]):
-                            st.markdown(block)
-
-            with tab6:
-                st.markdown("### Critic Review")
-                st.markdown(outputs.get("critic_review", "Not generated."))
+if __name__ == "__main__":
+    main()

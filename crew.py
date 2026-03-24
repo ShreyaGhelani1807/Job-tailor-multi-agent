@@ -26,9 +26,19 @@ from tasks.task_definitions import create_tasks
 def build_llm():
     # Use standard crewai LLM without provider prefix, so it routes to our proxied OpenAI provider
     return LLM(
-        model="llama-3.3-70b-versatile",
+        model="groq/llama-3.3-70b-versatile",
+        api_key=os.getenv("GROQ_API_KEY"),
         temperature=0.2,
         max_tokens=4096
+    )
+
+def build_fast_llm():
+    # Use standard crewai LLM without provider prefix, so it routes to our proxied OpenAI provider
+    return LLM(
+        model="groq/llama-3.1-8b-instant",
+        api_key=os.getenv("GROQ_API_KEY"),
+        temperature=0.2,
+        max_tokens=768
     )
 
 def send_n8n_webhook(payload: dict):
@@ -44,7 +54,8 @@ def send_n8n_webhook(payload: dict):
 
 def run_crew(inputs: dict) -> dict:
     try:
-        llm = build_llm()
+        llm_large = build_llm()
+        llm_fast = build_fast_llm()
 
         from tools.pdf_parser import PDFParserTool
         from tools.scraper import ScraperTool
@@ -61,15 +72,15 @@ def run_crew(inputs: dict) -> dict:
         ]
 
         agents = {
-            "jd_analyser":         create_jd_analyser(llm),
-            "profile_parser":      create_profile_parser(llm, tools),
-            "ats_scorer":          create_ats_scorer(llm),
-            "resume_tailor":       create_resume_tailor(llm),
-            "cover_letter_writer": create_cover_letter_writer(llm, tools),
-            "cold_email_writer":   create_cold_email_writer(llm),
-            "interview_prep":      create_interview_prep_agent(llm),
-            "memory":              create_memory_agent(llm),
-            "critic":              create_critic(llm),
+            "jd_analyser":         create_jd_analyser(llm_fast),
+            "profile_parser":      create_profile_parser(llm_large),
+            "ats_scorer":          create_ats_scorer(llm_fast),
+            "resume_tailor":       create_resume_tailor(llm_large),
+            "cover_letter_writer": create_cover_letter_writer(llm_large),
+            "cold_email_writer":   create_cold_email_writer(llm_large),
+            "interview_prep":      create_interview_prep_agent(llm_large),
+            "memory":              create_memory_agent(llm_fast),
+            "critic":              create_critic(llm_fast),
         }
 
         tasks_dict = create_tasks(agents, inputs)
@@ -104,3 +115,23 @@ def run_crew(inputs: dict) -> dict:
     except Exception as e:
         print(f"Crew error: {str(e)}")
         raise
+
+
+class JobApplicationCrew:
+    def __init__(self, resume_path: str, linkedin_url: str, jd_text_or_url: str):
+        self.resume_path = resume_path
+        self.linkedin_url = linkedin_url
+        self.jd_text_or_url = jd_text_or_url
+
+    def run(self) -> dict:
+        inputs = {
+            "resume_path": self.resume_path,
+            "linkedin_url": self.linkedin_url or ""
+        }
+
+        if self.jd_text_or_url and self.jd_text_or_url.lower().startswith("http"):
+            inputs["jd_url"] = self.jd_text_or_url
+        else:
+            inputs["jd_text"] = self.jd_text_or_url or ""
+
+        return run_crew(inputs)

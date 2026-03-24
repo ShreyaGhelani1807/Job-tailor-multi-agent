@@ -1,13 +1,14 @@
 from crewai import Agent
+from tools.pdf_parser import PDFParserTool
 
-def create_profile_parser(llm, tools):
+def create_profile_parser(llm, tools=None):
+    tools = tools or [PDFParserTool()]
     return Agent(
         role="Candidate Profile Parser",
-        goal="Parse the candidate's resume PDF and LinkedIn profile into a clean, structured profile containing all experience, skills, achievements, and education.",
+        goal="Parse the candidate resume PDF into a structured profile with skills, experience, and education.",
         backstory=(
-            "You are a professional resume consultant who can read any resume format and "
-            "extract structured, usable information. You know how to merge data from multiple "
-            "sources like PDFs and LinkedIn profiles into a single comprehensive candidate profile."
+            "You are a professional resume consultant who extracts structured information "
+            "from resumes. You use the PDF Parser tool to read the resume file."
         ),
         llm=llm,
         tools=tools,
